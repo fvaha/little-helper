@@ -1,25 +1,36 @@
-## Classic Version (CLI + API)
+## 1. Classic Mode (CLI + Flask API)
 
-Use this version if you want to run everything locally without Docker.
+This version runs directly on your server without Docker. Useful for minimal environments or direct access over SSH.
 
 ### How to Run
+
 ```bash
 git clone https://github.com/fvaha/little-helper.git
-cd little-helper/classic
+cd little-helper
 chmod +x launch.sh
 ./launch.sh
 ```
 
-## Compose Version (Docker + Web Dashboard)
+### Features
+- Interactive CLI interface
+- Python worker scripts for diagnostics
+- Optional Flask API to expose results as JSON
 
-Use this version if you want an easy GUI and complete containerized setup.
+---
+
+## 2. Docker Compose Mode (Web Dashboard)
+
+This version runs the API and a GUI dashboard inside containers.
 
 ### How to Run
+
 ```bash
 git clone https://github.com/fvaha/little-helper.git
 cd little-helper/compose
 docker-compose up --build
 ```
 
-- Open the dashboard at: http://localhost:8080
-- API is available at: http://localhost:5000
+Then open in your browser:
+
+- Dashboard: http://localhost:8080
+- API: http://localhost:5000
