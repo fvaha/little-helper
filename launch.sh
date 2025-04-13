@@ -1,9 +1,16 @@
 #!/bin/bash
 clear
 
-echo "System Info:"
-python3 workers/network_check.py
+# Concise System Summary
+echo "=== System Info Summary ==="
+echo -n "CPU: "; lscpu | grep 'Model name' | sed 's/Model name:[ \t]*//'
+echo -n "RAM: "; free -h | awk '/Mem:/ {print $2 " total, " $3 " used"}'
+echo -n "Disk: "; df -h / | awk 'NR==2 {print $2 " total, " $3 " used"}'
+echo -n "Main IP: "; hostname -I | awk '{print $1}'
+echo "Interfaces: $(ip -o link show | awk -F': ' '{print $2}' | paste -sd ',' -)"
+echo "============================"
 
+# Menu Loop
 while true; do
 echo ""
 echo "Select a category:"
