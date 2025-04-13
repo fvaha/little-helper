@@ -1,16 +1,14 @@
 #!/bin/bash
 clear
 
-# Concise System Summary
 echo "=== System Info Summary ==="
-echo -n "CPU: "; lscpu | grep 'Model name' | sed 's/Model name:[ \t]*//'
+echo -n "CPU: "; lscpu | grep 'Model name' | sed 's/Model name:[ 	]*//'
 echo -n "RAM: "; free -h | awk '/Mem:/ {print $2 " total, " $3 " used"}'
 echo -n "Disk: "; df -h / | awk 'NR==2 {print $2 " total, " $3 " used"}'
 echo -n "Main IP: "; hostname -I | awk '{print $1}'
 echo "Interfaces: $(ip -o link show | awk -F': ' '{print $2}' | paste -sd ',' -)"
 echo "============================"
 
-# Menu Loop
 while true; do
 echo ""
 echo "Select a category:"
@@ -30,13 +28,19 @@ case $choice in
   3) python3 workers/docker_check.py ;;
   4) python3 workers/k8s_check.py ;;
   5) python3 workers/pipelines_check.py ;;
-  6) cd api && python3 app.py && cd .. ;;
+  6) source venv/bin/activate && python3 api/app.py && deactivate ;;
   00)
     echo "Creating output directory..."
     mkdir -p output
 
-    echo "Installing Python packages..."
+    echo "Creating virtual environment..."
+    python3 -m venv venv
+
+    echo "Activating and installing Python packages..."
+    source venv/bin/activate
+    pip install --upgrade pip
     pip install -r api/requirements.txt
+    deactivate
 
     echo "Installing system tools..."
     sudo apt update
